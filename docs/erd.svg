@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .table-title { fill: #1f2937; font-size: 16px; font-weight: 700; }
+    .col { fill: #374151; font-size: 13px; }
+    .pk { fill: #1d4ed8; font-size: 13px; font-weight: 700; }
+    .fk { fill: #b45309; font-size: 13px; font-weight: 600; }
+    .box { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.5; }
+    .header { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1.5; }
+    .rel { stroke: #6b7280; stroke-width: 1.5; fill: none; }
+    .lbl { fill: #6b7280; font-size: 11px; }
+  </style>
+
+  <!-- users -->
+  <g>
+    <rect x="40" y="40" width="220" height="150" class="box"/>
+    <rect x="40" y="40" width="220" height="30" class="header"/>
+    <text x="50" y="60" class="table-title">users</text>
+    <text x="50" y="90" class="pk">id (PK)</text>
+    <text x="50" y="110" class="col">name</text>
+    <text x="50" y="130" class="col">email</text>
+    <text x="50" y="150" class="col">password</text>
+    <text x="50" y="170" class="col">role</text>
+    <text x="140" y="170" class="col">created_at</text>
+  </g>
+
+  <!-- accounts -->
+  <g>
+    <rect x="620" y="40" width="240" height="170" class="box"/>
+    <rect x="620" y="40" width="240" height="30" class="header"/>
+    <text x="630" y="60" class="table-title">accounts</text>
+    <text x="630" y="90" class="pk">id (PK)</text>
+    <text x="630" y="110" class="fk">user_id (FK -&gt; users.id)</text>
+    <text x="630" y="130" class="col">name</text>
+    <text x="630" y="150" class="col">type (cash|bank|e-wallet)</text>
+    <text x="630" y="170" class="col">balance</text>
+    <text x="630" y="190" class="col">created_at</text>
+  </g>
+
+  <!-- categories -->
+  <g>
+    <rect x="40" y="430" width="220" height="110" class="box"/>
+    <rect x="40" y="430" width="220" height="30" class="header"/>
+    <text x="50" y="450" class="table-title">categories</text>
+    <text x="50" y="480" class="pk">id (PK)</text>
+    <text x="50" y="500" class="col">name</text>
+    <text x="50" y="520" class="col">type (income|expense)</text>
+  </g>
+
+  <!-- transactions -->
+  <g>
+    <rect x="330" y="330" width="290" height="230" class="box"/>
+    <rect x="330" y="330" width="290" height="30" class="header"/>
+    <text x="340" y="350" class="table-title">transactions</text>
+    <text x="340" y="380" class="pk">id (PK)</text>
+    <text x="340" y="400" class="fk">account_id (FK -&gt; accounts.id)</text>
+    <text x="340" y="420" class="fk">category_id (FK -&gt; categories.id)</text>
+    <text x="340" y="440" class="col">type (income|expense|transfer)</text>
+    <text x="340" y="460" class="col">amount</text>
+    <text x="340" y="480" class="col">description</text>
+    <text x="340" y="500" class="col">transaction_date</text>
+    <text x="340" y="520" class="col">created_at</text>
+  </g>
+
+  <!-- relationships -->
+  <!-- users -> accounts -->
+  <path class="rel" d="M260,90 C440,90 440,90 620,90"/>
+  <text x="420" y="80" class="lbl">1 user -&gt; many accounts</text>
+
+  <!-- accounts -> transactions -->
+  <path class="rel" d="M740,210 C740,320 620,380 620,400"/>
+  <text x="700" y="280" class="lbl">1 account -&gt; many txns</text>
+
+  <!-- categories -> transactions -->
+  <path class="rel" d="M260,480 C300,450 300,440 330,420"/>
+  <text x="240" y="410" class="lbl">1 category -&gt; many txns</text>
+</svg>
