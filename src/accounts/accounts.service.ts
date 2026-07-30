@@ -48,6 +48,15 @@ export class AccountsService {
     if (!account) {
       throw new NotFoundException('Account not found');
     }
-    return await this.accountsRepository.deleteAccount(id);
+
+    const deleted = await this.accountsRepository.deleteAccount(id);
+    if (deleted) {
+      return {
+        message: 'Account deleted successfully',
+        status: 203,
+        id: id.toString(),
+      };
+    }
+    throw new Error('Error deleting account');
   }
 }
