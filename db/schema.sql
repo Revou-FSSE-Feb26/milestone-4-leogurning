@@ -13,11 +13,11 @@ DROP TABLE IF EXISTS users;
 -- users
 -- ---------------------------------------------------------
 CREATE TABLE users (
-    id          BIGSERIAL PRIMARY KEY,
-    name        VARCHAR(100)  NOT NULL,
-    email       VARCHAR(255)  NOT NULL UNIQUE,
-    password    VARCHAR(255)  NOT NULL,          -- store a bcrypt/argon2 hash, never plaintext
-    role        VARCHAR(20)   NOT NULL DEFAULT 'user'
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50)  NOT NULL,
+    email       VARCHAR(100)  NOT NULL UNIQUE,
+    password    VARCHAR(100)  NOT NULL,          -- store a bcrypt hash, never plaintext
+    role        VARCHAR(10)   NOT NULL DEFAULT 'user'
                     CHECK (role IN ('user', 'admin')),
     created_at  TIMESTAMP     NOT NULL DEFAULT now()
 );
@@ -26,8 +26,8 @@ CREATE TABLE users (
 -- accounts
 -- ---------------------------------------------------------
 CREATE TABLE accounts (
-    id          BIGSERIAL PRIMARY KEY,
-    user_id     BIGINT        NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    id          SERIAL PRIMARY KEY,
+    user_id     INT        NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     name        VARCHAR(100)  NOT NULL,
     type        VARCHAR(20)   NOT NULL
                     CHECK (type IN ('cash', 'bank', 'e-wallet')),
@@ -53,11 +53,11 @@ CREATE TABLE categories (
 -- transactions
 -- ---------------------------------------------------------
 CREATE TABLE transactions (
-    id                BIGSERIAL PRIMARY KEY,
-    account_id        BIGINT        NOT NULL REFERENCES accounts(id)   ON DELETE CASCADE,
-    category_id       BIGINT        NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
+    id                SERIAL PRIMARY KEY,
+    account_id        INT        NOT NULL REFERENCES accounts(id)   ON DELETE CASCADE,
+    category_id       INT        NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
     type              VARCHAR(20)   NOT NULL
-                          CHECK (type IN ('income', 'expense', 'transfer')),
+                CHECK (type IN ('income', 'expense', 'transfer')),
     amount            NUMERIC(12,2) NOT NULL CHECK (amount > 0),
     description       TEXT,                     -- optional, no NOT NULL: not every txn needs a note
     transaction_date  DATE          NOT NULL,
