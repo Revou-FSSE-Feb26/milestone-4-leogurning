@@ -2,6 +2,10 @@
 
 Personal finance tracker backend. Users hold multiple accounts, log transactions against them, and tag each transaction with a category.
 
+## Live Demo
+
+Check it out here: [https://fintrack-production-leon.up.railway.app/api/v1]
+
 ## ERD
 
 ![FinTrack ERD](docs/erd.svg)
