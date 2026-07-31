@@ -39,8 +39,8 @@ export class UsersController {
     status: 429,
     description: 'Too many requests. Please try again later.',
   })
-  getAllUsers() {
-    return this.usersService.getAllUsers();
+  async getAllUsers() {
+    return await this.usersService.getAllUsers();
   }
 
   @Get(':id')

@@ -12,8 +12,8 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  getAllUsers() {
-    return this.usersRepository.getAllUsers();
+  async getAllUsers() {
+    return await this.usersRepository.getAllUsers();
   }
 
   async getUserById(id: number) {
@@ -27,12 +27,12 @@ export class UsersService {
   async createUser(data: CreateUserDto) {
     const existingUser = await this.usersRepository.getUserByEmail(data.email);
     if (existingUser) {
-      throw new ConflictException('Email already exists');
+      throw new ConflictException('User with Email already exists');
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    return this.usersRepository.createUser({
+    return await this.usersRepository.createUser({
       ...data,
       password: hashedPassword,
     });
@@ -57,7 +57,7 @@ export class UsersService {
       data.password = await bcrypt.hash(data.password, 10);
     }
 
-    return this.usersRepository.updateUser(id, data);
+    return await this.usersRepository.updateUser(id, data);
   }
 
   async deleteUser(id: number) {
@@ -65,6 +65,14 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return this.usersRepository.deleteUser(id);
+    const deleted = await this.usersRepository.deleteUser(id);
+    if (deleted) {
+      return {
+        message: 'User deleted successfully',
+        status: 203,
+        id: id.toString(),
+      };
+    }
+    throw new Error('Error deleting user');
   }
 }

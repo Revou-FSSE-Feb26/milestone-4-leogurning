@@ -7,8 +7,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  getAllUsers() {
-    return this.prisma.user.findMany({
+  async getAllUsers() {
+    return await this.prisma.user.findMany({
       select: {
         id: true,
         name: true,
@@ -20,8 +20,8 @@ export class UsersRepository {
     });
   }
 
-  getUserById(id: number) {
-    return this.prisma.user.findUnique({
+  async getUserById(id: number) {
+    return await this.prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -34,14 +34,14 @@ export class UsersRepository {
     });
   }
 
-  getUserByEmail(email: string) {
-    return this.prisma.user.findUnique({
+  async getUserByEmail(email: string) {
+    return await this.prisma.user.findUnique({
       where: { email },
     });
   }
 
-  createUser(data: CreateUserDto) {
-    return this.prisma.user.create({
+  async createUser(data: CreateUserDto) {
+    return await this.prisma.user.create({
       data,
       select: {
         id: true,
@@ -54,8 +54,8 @@ export class UsersRepository {
     });
   }
 
-  updateUser(id: number, data: UpdateUserDto) {
-    return this.prisma.user.update({
+  async updateUser(id: number, data: UpdateUserDto) {
+    return await this.prisma.user.update({
       where: { id },
       data,
       select: {
@@ -73,13 +73,6 @@ export class UsersRepository {
     const deleted = await this.prisma.user.delete({
       where: { id },
     });
-    if (deleted) {
-      return {
-        message: 'User deleted successfully',
-        status: 203,
-        id: id.toString(),
-      };
-    }
-    throw new Error('Error deleting user');
+    return deleted;
   }
 }

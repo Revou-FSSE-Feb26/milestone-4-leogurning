@@ -70,13 +70,5 @@ export class AccountsRepository {
       where: { id },
     });
     return deleted;
-    // if (deleted) {
-    //   return {
-    //     message: 'Account deleted successfully',
-    //     status: 203,
-    //     id: id.toString(),
-    //   };
-    // }
-    // throw new Error('Error deleting account');
   }
 }
