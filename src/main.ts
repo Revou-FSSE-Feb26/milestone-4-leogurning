@@ -23,6 +23,10 @@ async function bootstrap() {
     .setDescription('API Documentation for the application')
     .setVersion('1.0')
     .addServer('http://localhost:3001', 'Local environment')
+    .addServer(
+      'https://https://fintrack-production-leon.up.railway.app',
+      'Live environment',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
