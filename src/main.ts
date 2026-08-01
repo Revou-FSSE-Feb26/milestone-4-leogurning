@@ -24,7 +24,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addServer('http://localhost:3001', 'Local environment')
     .addServer(
-      'https://https://fintrack-production-leon.up.railway.app',
+      'https://fintrack-production-leon.up.railway.app',
       'Live environment',
     )
     .build();
