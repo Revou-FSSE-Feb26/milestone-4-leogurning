@@ -6,6 +6,10 @@ Personal finance tracker backend. Users hold multiple accounts, log transactions
 
 Check it out here: [https://fintrack-production-leon.up.railway.app/api/v1]
 
+## Live API DOC
+
+SWAGGER API doc here: [https://fintrack-production-leon.up.railway.app/api/docs]
+
 ## ERD
 
 ![FinTrack ERD](docs/erd.svg)
