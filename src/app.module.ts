@@ -12,9 +12,19 @@ import { AccountsModule } from './accounts/accounts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 10000, // Time window in milliseconds
+          limit: 3, // Allow 3 requests per time window
+        },
+      ],
+    }),
     PrismaModule,
     UsersModule,
     AccountsModule,
@@ -22,7 +32,13 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     TransactionsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

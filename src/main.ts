@@ -17,15 +17,19 @@ async function bootstrap() {
     }),
   );
 
+  const port = process.env.PORT || 3001;
+  const hostUrl = process.env.APP_URL || `http://localhost:${port}`;
+
   // Enable swagger docs
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
     .setDescription('API Documentation for the application')
     .setVersion('1.0')
-    .addServer('http://localhost:3001', 'Local environment')
     .addServer(
-      'https://fintrack-production-leon.up.railway.app',
-      'Live environment',
+      hostUrl,
+      process.env.NODE_ENV === 'production'
+        ? 'Production Server'
+        : 'Local Environment',
     )
     .build();
 
