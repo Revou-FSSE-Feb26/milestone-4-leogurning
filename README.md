@@ -35,6 +35,7 @@ db/
   queries.sql     # 9 analytical SQL queries
 prisma/
   schema.prisma   # Prisma schema (PostgreSQL)
+  seed.ts         # Prisma PostgreSQL database data seed
 ```
 
 ---
@@ -123,7 +124,7 @@ psql -U postgres -d fintrack -f db/queries.sql
 
 ---
 
-## 4. Generate the Prisma client
+## 4. Generate the Prisma client & Seed initial data
 
 ```bash
 npx prisma generate
@@ -132,6 +133,12 @@ npx prisma generate
 This generates the typed Prisma client into `generated/prisma/` based on `prisma/schema.prisma`.
 
 > **Note:** The project uses `@prisma/adapter-pg` (driver adapter). Do **not** run `prisma migrate` — the schema is managed via the raw SQL files in `db/`.
+
+```bash
+npx prisma db seed
+```
+
+This will load/seed initial data to Postgres Database with script in `prisma/seed.ts`, based on DATABASE_URL setting and `prisma.config.ts`.
 
 ---
 
