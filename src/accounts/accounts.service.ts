@@ -27,6 +27,15 @@ export class AccountsService {
     return account;
   }
 
+  async getAccountWithTransactions(id: number) {
+    const account =
+      await this.accountsRepository.getAccountWithTransactions(id);
+    if (!account) {
+      throw new NotFoundException('Account not found');
+    }
+    return account;
+  }
+
   async createAccount(userId: number, data: CreateAccountDto) {
     const user = await this.usersRepository.getUserById(userId);
     if (!user) {

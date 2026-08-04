@@ -67,6 +67,32 @@ export class AccountsController {
     return await this.accountsService.getAccountsByUserId(userId);
   }
 
+  @Get(':id/transactions')
+  @ApiOperation({
+    summary: 'Get account with transactions',
+    description:
+      'Get account details along with all its transactions, each nested with category data.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Account with transactions retrieved successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized. Invalid or missing token.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Account not found.',
+  })
+  @ApiResponse({
+    status: 429,
+    description: 'Too many requests. Please try again later.',
+  })
+  async getAccountWithTransactions(@Param('id', ParseIntPipe) id: number) {
+    return await this.accountsService.getAccountWithTransactions(id);
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: 'Get account by ID',

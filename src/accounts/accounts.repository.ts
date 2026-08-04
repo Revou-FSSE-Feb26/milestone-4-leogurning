@@ -65,6 +65,25 @@ export class AccountsRepository {
     });
   }
 
+  async getAccountWithTransactions(id: number) {
+    return await this.prisma.account.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: { id: true, name: true, email: true },
+        },
+        transactions: {
+          include: {
+            category: {
+              select: { id: true, name: true, type: true },
+            },
+          },
+          orderBy: { transactionDate: 'desc' },
+        },
+      },
+    });
+  }
+
   async deleteAccount(id: number) {
     const deleted = await this.prisma.account.delete({
       where: { id },
