@@ -1,11 +1,14 @@
 import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../generated/prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
 });
 const prisma = new PrismaClient({ adapter });
+
+const SALT_ROUNDS = 12;
 
 async function main() {
   // Clean tables in order (transactions → accounts → categories → users)
@@ -28,27 +31,35 @@ async function main() {
 
   // ---------------------------------------------------------
   // Users (id 1-3)
+  // Plaintext passwords for testing:
+  //   Alice  → alice123!
+  //   Budi   → budi123!
+  //   Citra  → citra123!
   // ---------------------------------------------------------
+  const alicePassword = await bcrypt.hash('alice123!', SALT_ROUNDS);
+  const budiPassword = await bcrypt.hash('budi123!', SALT_ROUNDS);
+  const citraPassword = await bcrypt.hash('citra123!', SALT_ROUNDS);
+
   await prisma.user.createMany({
     data: [
       {
         name: 'Alice Wirawan',
         email: 'alice@example.com',
-        password: '$2b$10$hashplaceholder1',
+        password: alicePassword,
         role: 'user',
         createdAt: new Date('2026-01-05T08:00:00'),
       },
       {
         name: 'Budi Santoso',
         email: 'budi@example.com',
-        password: '$2b$10$hashplaceholder2',
+        password: budiPassword,
         role: 'user',
         createdAt: new Date('2026-01-06T09:15:00'),
       },
       {
         name: 'Citra Lestari',
         email: 'citra@example.com',
-        password: '$2b$10$hashplaceholder3',
+        password: citraPassword,
         role: 'admin',
         createdAt: new Date('2026-01-07T10:30:00'),
       },
