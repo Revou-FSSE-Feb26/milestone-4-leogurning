@@ -36,7 +36,7 @@ export class AuthService {
         password: hashedPassword,
       });
 
-      const token = await this.generateTokens(user.id, user.email);
+      const token = await this.generateTokens(user.id, user.email, user.name);
 
       return {
         accessToken: token,
@@ -62,7 +62,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const token = await this.generateTokens(user.id, user.email);
+    const token = await this.generateTokens(user.id, user.email, user.name);
 
     return {
       accessToken: token,
@@ -75,8 +75,12 @@ export class AuthService {
     };
   }
 
-  private async generateTokens(userId: number, email: string): Promise<string> {
-    const payload = { sub: userId, email };
+  private async generateTokens(
+    userId: number,
+    email: string,
+    name: string,
+  ): Promise<string> {
+    const payload = { sub: userId, email, name };
     const accessToken = await this.jwtService.signAsync(payload, {
       expiresIn: '15m',
     });
