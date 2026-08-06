@@ -16,6 +16,7 @@ export class AccountsService {
   }
 
   async getAccountsByUserId(userId: number) {
+    console.log('userId:' + userId);
     return await this.accountsRepository.getAccountsByUserId(userId);
   }
 

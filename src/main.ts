@@ -25,6 +25,10 @@ async function bootstrap() {
     .setTitle('API Documentation')
     .setDescription('API Documentation for the application')
     .setVersion('1.0')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'access-token',
+    )
     .addServer(
       hostUrl,
       process.env.NODE_ENV === 'production'

@@ -12,16 +12,38 @@ import {
 import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/common/decorators/get-user.decorator';
 
 @Controller('accounts')
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth('access-token')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
   @Get()
+  @ApiOperation({
+    summary: 'Get own accounts',
+    description: 'Get all accounts belonging to the logged-in user.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User accounts retrieved successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized. Invalid or missing token.',
+  })
+  @ApiResponse({
+    status: 429,
+    description: 'Too many requests. Please try again later.',
+  })
+  async getAccounts(@CurrentUser('sub') userId: number) {
+    return await this.accountsService.getAccountsByUserId(userId);
+  }
+
+  @Get('all')
   @ApiOperation({
     summary: 'List all accounts',
     description: 'Get all accounts across all users. Admin only.',
@@ -72,31 +94,6 @@ export class AccountsController {
     description: 'Too many requests. Please try again later.',
   })
   async getAccountsByUserId(@Param('userId', ParseIntPipe) userId: number) {
-    return await this.accountsService.getAccountsByUserId(userId);
-  }
-
-  @Get()
-  @ApiOperation({
-    summary: 'Get own accounts of the login user ID',
-    description: 'Get all accounts belonging to a login user.',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'User accounts retrieved successfully',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Unauthorized. Invalid or missing token.',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'User not found.',
-  })
-  @ApiResponse({
-    status: 429,
-    description: 'Too many requests. Please try again later.',
-  })
-  async getAccounts(@CurrentUser('id') userId: number) {
     return await this.accountsService.getAccountsByUserId(userId);
   }
 
