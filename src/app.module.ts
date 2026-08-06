@@ -14,6 +14,7 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { APP_GUARD } from '@nestjs/core';
     AccountsModule,
     CategoriesModule,
     TransactionsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
