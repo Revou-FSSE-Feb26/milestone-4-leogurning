@@ -7,13 +7,17 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/common/decorators/get-user.decorator';
 
 @Controller('accounts')
+@UseGuards(JwtAuthGuard)
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
@@ -44,8 +48,37 @@ export class AccountsController {
 
   @Get('user/:userId')
   @ApiOperation({
-    summary: 'Get accounts by user ID',
+    summary: 'Get accounts by user ID. Perform By Admin ',
     description: 'Get all accounts belonging to a specific user.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User accounts retrieved successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized. Invalid or missing token.',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden. Admin role required.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found.',
+  })
+  @ApiResponse({
+    status: 429,
+    description: 'Too many requests. Please try again later.',
+  })
+  async getAccountsByUserId(@Param('userId', ParseIntPipe) userId: number) {
+    return await this.accountsService.getAccountsByUserId(userId);
+  }
+
+  @Get()
+  @ApiOperation({
+    summary: 'Get own accounts of the login user ID',
+    description: 'Get all accounts belonging to a login user.',
   })
   @ApiResponse({
     status: 200,
@@ -63,7 +96,7 @@ export class AccountsController {
     status: 429,
     description: 'Too many requests. Please try again later.',
   })
-  async getAccountsByUserId(@Param('userId', ParseIntPipe) userId: number) {
+  async getAccounts(@CurrentUser('id') userId: number) {
     return await this.accountsService.getAccountsByUserId(userId);
   }
 
