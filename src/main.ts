@@ -11,7 +11,7 @@ async function bootstrap() {
   app.use(helmet());
 
   app.enableCors({
-    origin: ['https://*.railway.app'],
+    origin: ['https://fintrack-production-leon.up.railway.app'],
     credentials: true,
   });
 
