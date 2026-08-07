@@ -15,16 +15,19 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/common/decorators/get-user.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { UserRole } from 'generated/prisma/enums';
 
 @Controller('accounts')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth('access-token')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
   @Get()
   @ApiOperation({
-    summary: 'Get own accounts',
+    summary: 'Get own accounts of the login user',
     description: 'Get all accounts belonging to the logged-in user.',
   })
   @ApiResponse({
@@ -44,8 +47,9 @@ export class AccountsController {
   }
 
   @Get('all')
+  @Roles(UserRole.admin)
   @ApiOperation({
-    summary: 'List all accounts',
+    summary: 'List all accounts. Admin only',
     description: 'Get all accounts across all users. Admin only.',
   })
   @ApiResponse({
@@ -69,6 +73,7 @@ export class AccountsController {
   }
 
   @Get('user/:userId')
+  @Roles(UserRole.admin)
   @ApiOperation({
     summary: 'Get accounts by user ID. Perform By Admin ',
     description: 'Get all accounts belonging to a specific user.',
@@ -99,9 +104,9 @@ export class AccountsController {
 
   @Get(':id/transactions')
   @ApiOperation({
-    summary: 'Get account with transactions',
+    summary: 'Get account with transactions of the login user',
     description:
-      'Get account details along with all its transactions, each nested with category data.',
+      'Get account details along with all its transactions of the login user, each nested with category data.',
   })
   @ApiResponse({
     status: 200,
@@ -119,14 +124,18 @@ export class AccountsController {
     status: 429,
     description: 'Too many requests. Please try again later.',
   })
-  async getAccountWithTransactions(@Param('id', ParseIntPipe) id: number) {
-    return await this.accountsService.getAccountWithTransactions(id);
+  async getAccountWithTransactions(
+    @CurrentUser('sub') userId: number,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.accountsService.getAccountWithTransactions(userId, id);
   }
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Get account by ID',
-    description: 'Get details of a specific account by its ID.',
+    summary: 'Get account by ID of the login user',
+    description:
+      'Get details of a specific account by its ID. Specific of the login user',
   })
   @ApiResponse({
     status: 200,
@@ -144,14 +153,17 @@ export class AccountsController {
     status: 429,
     description: 'Too many requests. Please try again later.',
   })
-  async getAccountById(@Param('id', ParseIntPipe) id: number) {
-    return await this.accountsService.getAccountById(id);
+  async getAccountById(
+    @CurrentUser('sub') userId: number,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.accountsService.getAccountById(userId, id);
   }
 
-  @Post('user/:userId')
+  @Post()
   @ApiOperation({
-    summary: 'Create a new account',
-    description: 'Create a new account for a specific user.',
+    summary: 'Create a new account of the login user',
+    description: 'Create a new account for the login user.',
   })
   @ApiResponse({
     status: 201,
@@ -175,7 +187,7 @@ export class AccountsController {
     description: 'Too many requests. Please try again later.',
   })
   async createAccount(
-    @Param('userId', ParseIntPipe) userId: number,
+    @CurrentUser('sub') userId: number,
     @Body() createAccountDto: CreateAccountDto,
   ) {
     return await this.accountsService.createAccount(userId, createAccountDto);
@@ -183,8 +195,8 @@ export class AccountsController {
 
   @Patch(':id')
   @ApiOperation({
-    summary: 'Update an account',
-    description: 'Update an existing account.',
+    summary: 'Update an account of the login user',
+    description: 'Update an existing account of the login user.',
   })
   @ApiResponse({
     status: 200,
@@ -208,16 +220,21 @@ export class AccountsController {
     description: 'Too many requests. Please try again later.',
   })
   async updateAccount(
+    @CurrentUser('sub') userId: number,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateAccountDto: UpdateAccountDto,
   ) {
-    return await this.accountsService.updateAccount(id, updateAccountDto);
+    return await this.accountsService.updateAccount(
+      userId,
+      id,
+      updateAccountDto,
+    );
   }
 
   @Delete(':id')
   @ApiOperation({
-    summary: 'Delete an account',
-    description: 'Delete an existing account.',
+    summary: 'Delete an account of the login user',
+    description: 'Delete an existing account of the login user.',
   })
   @ApiResponse({
     status: 200,
@@ -235,7 +252,10 @@ export class AccountsController {
     status: 429,
     description: 'Too many requests. Please try again later.',
   })
-  async deleteAccount(@Param('id', ParseIntPipe) id: number) {
-    return await this.accountsService.deleteAccount(id);
+  async deleteAccount(
+    @CurrentUser('sub') userId: number,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.accountsService.deleteAccount(userId, id);
   }
 }

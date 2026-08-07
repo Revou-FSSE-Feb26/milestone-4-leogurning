@@ -62,7 +62,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const token = await this.generateTokens(user.id, user.email, user.name);
+    const token = await this.generateTokens(user.id, user.email, user.role);
 
     return {
       accessToken: token,
@@ -78,9 +78,9 @@ export class AuthService {
   private async generateTokens(
     userId: number,
     email: string,
-    name: string,
+    role: string,
   ): Promise<string> {
-    const payload = { sub: userId, email, name };
+    const payload = { sub: userId, email, role };
     const accessToken = await this.jwtService.signAsync(payload, {
       expiresIn: '15m',
     });

@@ -28,9 +28,9 @@ export class AccountsRepository {
     });
   }
 
-  async getAccountById(id: number) {
+  async getAccountById(userId: number, id: number) {
     return await this.prisma.account.findUnique({
-      where: { id },
+      where: { userId, id },
       include: {
         user: {
           select: { id: true, name: true, email: true },
@@ -65,9 +65,9 @@ export class AccountsRepository {
     });
   }
 
-  async getAccountWithTransactions(id: number) {
+  async getAccountWithTransactions(userId: number, id: number) {
     return await this.prisma.account.findUnique({
-      where: { id },
+      where: { userId, id },
       include: {
         user: {
           select: { id: true, name: true, email: true },

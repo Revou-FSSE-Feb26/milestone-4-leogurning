@@ -20,17 +20,19 @@ export class AccountsService {
     return await this.accountsRepository.getAccountsByUserId(userId);
   }
 
-  async getAccountById(id: number) {
-    const account = await this.accountsRepository.getAccountById(id);
+  async getAccountById(userId: number, id: number) {
+    const account = await this.accountsRepository.getAccountById(userId, id);
     if (!account) {
       throw new NotFoundException('Account not found');
     }
     return account;
   }
 
-  async getAccountWithTransactions(id: number) {
-    const account =
-      await this.accountsRepository.getAccountWithTransactions(id);
+  async getAccountWithTransactions(userId: number, id: number) {
+    const account = await this.accountsRepository.getAccountWithTransactions(
+      userId,
+      id,
+    );
     if (!account) {
       throw new NotFoundException('Account not found');
     }
@@ -45,16 +47,16 @@ export class AccountsService {
     return await this.accountsRepository.createAccount(userId, data);
   }
 
-  async updateAccount(id: number, data: UpdateAccountDto) {
-    const account = await this.accountsRepository.getAccountById(id);
+  async updateAccount(userId: number, id: number, data: UpdateAccountDto) {
+    const account = await this.accountsRepository.getAccountById(userId, id);
     if (!account) {
       throw new NotFoundException('Account not found');
     }
     return await this.accountsRepository.updateAccount(id, data);
   }
 
-  async deleteAccount(id: number) {
-    const account = await this.accountsRepository.getAccountById(id);
+  async deleteAccount(userId: number, id: number) {
+    const account = await this.accountsRepository.getAccountById(userId, id);
     if (!account) {
       throw new NotFoundException('Account not found');
     }
