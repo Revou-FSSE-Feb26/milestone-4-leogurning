@@ -117,7 +117,8 @@ export class TransactionsService {
       data.accountId !== undefined &&
       data.accountId !== existing.account.id
     ) {
-      const newAccount = await this.accountsRepository.findAccountById(
+      const newAccount = await this.accountsRepository.getAccountById(
+        userId,
         data.accountId,
       );
       if (!newAccount) {
@@ -152,8 +153,10 @@ export class TransactionsService {
       newType === TransactionType.EXPENSE ||
       newType === TransactionType.TRANSFER
     ) {
-      const targetAccount =
-        await this.accountsRepository.findAccountById(newAccountId);
+      const targetAccount = await this.accountsRepository.getAccountById(
+        userId,
+        newAccountId,
+      );
       if (!targetAccount) {
         throw new NotFoundException('Account not found');
       }
