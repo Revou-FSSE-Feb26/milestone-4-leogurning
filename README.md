@@ -54,7 +54,7 @@ AppModule
 ├── UsersModule           (CRUD users, admin)
 ├── AccountsModule        (CRUD accounts, ownership-scoped)
 ├── CategoriesModule      (CRUD categories)
-└── TransactionsModule    (CRUD transactions, balance logic)
+└── TransactionsModule    (CRUD transactions, ownership-scoped, balance logic)
 ```
 
 Each feature module follows a **Controller → Service → Repository** pattern:
@@ -75,12 +75,12 @@ Each feature module follows a **Controller → Service → Repository** pattern:
 ### Auth Flow
 
 ```
-┌─────────┐   POST /auth/register    ┌─────────────┐
-│  Client │ ────────────────────────> │ AuthService  │ ─── bcrypt hash ──> DB
+┌─────────┐   POST /auth/register     ┌─────────────┐
+│  Client │ ────────────────────────> │ AuthService │ ─── bcrypt hash ──> DB
 │         │ <──────────── JWT ─────── │             │
 │         │                           └─────────────┘
 │         │   POST /auth/login
-│         │ ────────────────────────> │ AuthService  │ ─── bcrypt compare
+│         │ ────────────────────────> │ AuthService │ ─── bcrypt compare
 │         │ <──────────── JWT ─────── │             │
 │         │                           └─────────────┘
 │         │   GET /accounts (+ Bearer token)
@@ -115,7 +115,7 @@ src/
   users/             # Users module (CRUD)
   accounts/          # Accounts module (CRUD, ownership-scoped)
   categories/        # Categories module (CRUD)
-  transactions/      # Transactions module (CRUD + atomic balance recalculation)
+  transactions/      # Transactions module (CRUD, ownership-scoped + atomic balance recalculation)
   common/
     decorators/      # @CurrentUser, @Roles
     middleware/      # LoggerMiddleware
