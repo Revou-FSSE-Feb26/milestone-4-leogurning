@@ -11,7 +11,7 @@ const transactionSelect = {
   transactionDate: true,
   createdAt: true,
   account: {
-    select: { id: true, name: true, type: true },
+    select: { id: true, userId: true, name: true, type: true },
   },
   category: {
     select: { id: true, name: true, type: true },
@@ -29,6 +29,14 @@ export class TransactionsRepository {
     });
   }
 
+  async getTransactions(userId: number) {
+    return await this.prisma.transaction.findMany({
+      where: { account: { userId } },
+      select: transactionSelect,
+      orderBy: { transactionDate: 'desc' },
+    });
+  }
+
   async getTransactionsByAccountId(accountId: number) {
     return await this.prisma.transaction.findMany({
       where: { accountId },
@@ -37,9 +45,9 @@ export class TransactionsRepository {
     });
   }
 
-  async getTransactionById(id: number) {
+  async getTransactionById(userId: number, id: number) {
     return await this.prisma.transaction.findUnique({
-      where: { id },
+      where: { id, account: { userId } },
       select: transactionSelect,
     });
   }

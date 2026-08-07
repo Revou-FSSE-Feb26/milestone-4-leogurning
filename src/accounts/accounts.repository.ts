@@ -39,6 +39,17 @@ export class AccountsRepository {
     });
   }
 
+  async findAccountById(id: number) {
+    return await this.prisma.account.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: { id: true, name: true, email: true },
+        },
+      },
+    });
+  }
+
   async createAccount(userId: number, data: CreateAccountDto) {
     return await this.prisma.account.create({
       data: {

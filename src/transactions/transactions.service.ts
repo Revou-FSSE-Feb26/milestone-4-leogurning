@@ -33,8 +33,15 @@ export class TransactionsService {
     return await this.transactionsRepository.getAllTransactions();
   }
 
-  async getTransactionsByAccountId(accountId: number) {
-    const account = await this.accountsRepository.getAccountById(accountId);
+  async getTransactions(userId: number) {
+    return await this.transactionsRepository.getTransactions(userId);
+  }
+
+  async getTransactionsByAccountId(userId: number, accountId: number) {
+    const account = await this.accountsRepository.getAccountById(
+      userId,
+      accountId,
+    );
     if (!account) {
       throw new NotFoundException('Account not found');
     }
@@ -43,18 +50,21 @@ export class TransactionsService {
     );
   }
 
-  async getTransactionById(id: number) {
-    const transaction =
-      await this.transactionsRepository.getTransactionById(id);
+  async getTransactionById(userId: number, id: number) {
+    const transaction = await this.transactionsRepository.getTransactionById(
+      userId,
+      id,
+    );
     if (!transaction) {
       throw new NotFoundException('Transaction not found');
     }
     return transaction;
   }
 
-  async createTransaction(data: CreateTransactionDto) {
+  async createTransaction(userId: number, data: CreateTransactionDto) {
     // Validate account exists
     const account = await this.accountsRepository.getAccountById(
+      userId,
       data.accountId,
     );
     if (!account) {
@@ -89,8 +99,15 @@ export class TransactionsService {
     return await this.transactionsRepository.createTransaction(data, delta);
   }
 
-  async updateTransaction(id: number, data: UpdateTransactionDto) {
-    const existing = await this.transactionsRepository.getTransactionById(id);
+  async updateTransaction(
+    userId: number,
+    id: number,
+    data: UpdateTransactionDto,
+  ) {
+    const existing = await this.transactionsRepository.getTransactionById(
+      userId,
+      id,
+    );
     if (!existing) {
       throw new NotFoundException('Transaction not found');
     }
@@ -100,7 +117,7 @@ export class TransactionsService {
       data.accountId !== undefined &&
       data.accountId !== existing.account.id
     ) {
-      const newAccount = await this.accountsRepository.getAccountById(
+      const newAccount = await this.accountsRepository.findAccountById(
         data.accountId,
       );
       if (!newAccount) {
@@ -136,7 +153,7 @@ export class TransactionsService {
       newType === TransactionType.TRANSFER
     ) {
       const targetAccount =
-        await this.accountsRepository.getAccountById(newAccountId);
+        await this.accountsRepository.findAccountById(newAccountId);
       if (!targetAccount) {
         throw new NotFoundException('Account not found');
       }
@@ -165,8 +182,11 @@ export class TransactionsService {
     );
   }
 
-  async deleteTransaction(id: number) {
-    const existing = await this.transactionsRepository.getTransactionById(id);
+  async deleteTransaction(userId: number, id: number) {
+    const existing = await this.transactionsRepository.getTransactionById(
+      userId,
+      id,
+    );
     if (!existing) {
       throw new NotFoundException('Transaction not found');
     }
