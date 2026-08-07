@@ -12,6 +12,28 @@ Check it out here: [https://fintrack-production-leon.up.railway.app/api/v1]
 
 SWAGGER API doc here: [https://fintrack-production-leon.up.railway.app/api/docs]
 
+To test authenticated endpoints in SWAGGER:
+
+1. Call `POST /api/v1/auth/login` with credentials
+2. Copy the `accessToken` from the response
+3. Click **Authorize** (lock icon) → paste the token → click **Authorize**
+4. All subsequent requests include the Bearer token
+
+---
+
+## Postman collection API DOC
+
+Postman collection API Doc can be exported from docs/Fintrack.postman_collection.json
+
+To test authenticated endpoints in Postman:
+
+1. Call `POST /api/v1/auth/login` with credentials
+2. Copy the `accessToken` from the response
+3. Go to Fintrack collection --> Variables, update Variable of accessToken → paste the token
+4. All subsequent requests include the Bearer token
+
+---
+
 ## Entity Relationship Diagram
 
 ```
