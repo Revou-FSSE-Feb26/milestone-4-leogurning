@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, UserRole } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -35,6 +35,7 @@ export class UsersService {
     return await this.usersRepository.createUser({
       ...data,
       password: hashedPassword,
+      role: UserRole.ADMIN,
     });
   }
 

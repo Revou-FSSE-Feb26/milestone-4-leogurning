@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthRepository } from './auth.repository';
-import { RegisterDto } from './dto/register.dto';
+import { RegisterDto, UserRole } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { AuthResponseDto } from './dto/auth-response.dto';
@@ -33,6 +33,7 @@ export class AuthService {
 
       const user = await this.authRepository.createUser({
         ...registerDto,
+        role: UserRole.USER,
         password: hashedPassword,
       });
 

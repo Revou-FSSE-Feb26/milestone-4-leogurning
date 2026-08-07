@@ -41,9 +41,4 @@ export class RegisterDto {
   @MinLength(8)
   @MaxLength(100)
   password: string;
-
-  @ApiProperty({ description: 'Role of the user', example: 'user' })
-  @IsEnum(UserRole)
-  @IsNotEmpty()
-  role: UserRole;
 }

@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -42,8 +43,13 @@ export class CreateUserDto {
   @MaxLength(100)
   password: string;
 
-  @ApiProperty({ description: 'Role of the user', example: 'admin' })
+  @ApiProperty({
+    description: 'Role of the user',
+    enum: UserRole,
+    example: 'admin',
+  })
   @IsEnum(UserRole)
   @IsNotEmpty()
-  role: UserRole;
+  @IsOptional()
+  role?: UserRole;
 }
