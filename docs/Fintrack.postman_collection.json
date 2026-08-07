@@ -7,11 +7,215 @@
   },
   "item": [
     {
+      "name": "auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alicia Wonderland\",\n  \"email\": \"alicia@email.id\",\n  \"password\": \"alice123!\",\n  \"role\": \"user\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{endpointURLBase}}/api/v1/auth/register",
+              "host": [
+                "{{endpointURLBase}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Alicia Wonderland\",\n  \"email\": \"alicia@email.id\",\n  \"password\": \"alice123!\",\n  \"role\": \"user\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{endpointURLBase}}/api/v1/auth/register",
+                  "host": [
+                    "{{endpointURLBase}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "User email already exist",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Alicia Wonderland\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"alice123!\",\n  \"role\": \"user\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{endpointURLBase}}/api/v1/auth/register",
+                  "host": [
+                    "{{endpointURLBase}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alice@example.com\",\n  \"password\": \"alice123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{endpointURLBase}}/api/v1/auth/login",
+              "host": [
+                "{{endpointURLBase}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"alice@example.com\",\n  \"password\": \"alice123!\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{endpointURLBase}}/api/v1/auth/login",
+                  "host": [
+                    "{{endpointURLBase}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "Invalid Credential",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"alice@example.com\",\n  \"password\": \"alice111!\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{endpointURLBase}}/api/v1/auth/login",
+                  "host": [
+                    "{{endpointURLBase}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
+        }
+      ],
+      "description": "This is Auth module for User Registration and Login process"
+    },
+    {
       "name": "users",
       "item": [
         {
-          "name": "Get All Users",
+          "name": "Get User profile",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -52,12 +256,22 @@
           ]
         },
         {
-          "name": "Get User ById",
+          "name": "Get All Users (Admin only)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{endpointURLBase}}/api/v1/users/1",
+              "raw": "{{endpointURLBase}}/api/v1/users/all",
               "host": [
                 "{{endpointURLBase}}"
               ],
@@ -65,7 +279,7 @@
                 "api",
                 "v1",
                 "users",
-                "1"
+                "all"
               ]
             }
           },
@@ -76,7 +290,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{endpointURLBase}}/api/v1/users/1",
+                  "raw": "{{endpointURLBase}}/api/v1/users/all",
                   "host": [
                     "{{endpointURLBase}}"
                   ],
@@ -84,7 +298,7 @@
                     "api",
                     "v1",
                     "users",
-                    "1"
+                    "all"
                   ]
                 }
               },
@@ -94,12 +308,12 @@
               "body": null
             },
             {
-              "name": "User Not Found",
+              "name": "Forbidden. Admin Only",
               "originalRequest": {
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{endpointURLBase}}/api/v1/users/10",
+                  "raw": "{{endpointURLBase}}/api/v1/users/all",
                   "host": [
                     "{{endpointURLBase}}"
                   ],
@@ -107,7 +321,7 @@
                     "api",
                     "v1",
                     "users",
-                    "10"
+                    "all"
                   ]
                 }
               },
@@ -119,13 +333,23 @@
           ]
         },
         {
-          "name": "Create User",
+          "name": "Create User (admin only)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Don Ritto\",\n  \"email\": \"ritto@email.id\",\n  \"password\": \"gr3atRitto!23\",\n  \"role\": \"user\"\n}",
+              "raw": "{\n  \"name\": \"Don Ritto\",\n  \"email\": \"ritto@email.id\",\n  \"password\": \"gr3atRitto!23\",\n  \"role\": \"admin\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -183,7 +407,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"Don Ritto\",\n  \"email\": \"ritto@email.id\",\n  \"password\": \"gr3atRitto!23\",\n  \"role\": \"user\"\n}",
+                  "raw": "{\n  \"name\": \"Don Ritto\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"gr3atRitto!23\",\n  \"role\": \"admin\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -210,13 +434,23 @@
           ]
         },
         {
-          "name": "Update User",
+          "name": "Update User profile",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PATCH",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Don Ritto Sinaga\",\n \"email\": \"donrit@email.id\"\n}",
+              "raw": "{\n  \"name\": \"Alice Wirawan Sinaga\",\n \"email\": \"alice@email.com\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -224,15 +458,14 @@
               }
             },
             "url": {
-              "raw": "{{endpointURLBase}}/api/v1/users/6",
+              "raw": "{{endpointURLBase}}/api/v1/users",
               "host": [
                 "{{endpointURLBase}}"
               ],
               "path": [
                 "api",
                 "v1",
-                "users",
-                "6"
+                "users"
               ]
             }
           },
@@ -276,7 +509,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"Don Ritto\",\n \"email\": \"ritto@email.id\"\n}",
+                  "raw": "{\n  \"name\": \"Alice Wirawan Sinaga\",\n \"email\": \"alice@email.com\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -304,8 +537,18 @@
           ]
         },
         {
-          "name": "Delete User",
+          "name": "Delete User (Admin only)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "url": {
@@ -351,7 +594,7 @@
                 "method": "DELETE",
                 "header": [],
                 "url": {
-                  "raw": "{{endpointURLBase}}/api/v1/users/6",
+                  "raw": "{{endpointURLBase}}/api/v1/users/60",
                   "host": [
                     "{{endpointURLBase}}"
                   ],
@@ -359,7 +602,7 @@
                     "api",
                     "v1",
                     "users",
-                    "6"
+                    "60"
                   ]
                 }
               },
@@ -376,8 +619,18 @@
       "name": "accounts",
       "item": [
         {
-          "name": "Get All Accounts",
+          "name": "Get Accounts of login user",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -418,8 +671,18 @@
           ]
         },
         {
-          "name": "Get Account By Id",
+          "name": "Get Account By Id of login user",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -487,6 +750,16 @@
         {
           "name": "Get Account By Id with transactions",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -555,8 +828,18 @@
           ]
         },
         {
-          "name": "Get Accounts By UserId",
+          "name": "Get Accounts By UserId (Admin only)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -601,8 +884,18 @@
           ]
         },
         {
-          "name": "Create New Account of User",
+          "name": "Create New Account of login User",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
@@ -615,16 +908,14 @@
               }
             },
             "url": {
-              "raw": "{{endpointURLBase}}/api/v1/accounts/user/1",
+              "raw": "{{endpointURLBase}}/api/v1/accounts",
               "host": [
                 "{{endpointURLBase}}"
               ],
               "path": [
                 "api",
                 "v1",
-                "accounts",
-                "user",
-                "1"
+                "accounts"
               ]
             }
           },
@@ -644,16 +935,14 @@
                   }
                 },
                 "url": {
-                  "raw": "{{endpointURLBase}}/api/v1/accounts/user/1",
+                  "raw": "{{endpointURLBase}}/api/v1/accounts",
                   "host": [
                     "{{endpointURLBase}}"
                   ],
                   "path": [
                     "api",
                     "v1",
-                    "accounts",
-                    "user",
-                    "1"
+                    "accounts"
                   ]
                 }
               },
@@ -663,13 +952,13 @@
               "body": null
             },
             {
-              "name": "User Not Found",
+              "name": "Bad Request category unknown",
               "originalRequest": {
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"Gopay Alice\",\n  \"type\": \"e_wallet\",\n  \"balance\": 100000\n}",
+                  "raw": "{\n  \"name\": \"Gopay Alice\",\n  \"type\": \"e_walleto\",\n  \"balance\": 100000\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -677,16 +966,14 @@
                   }
                 },
                 "url": {
-                  "raw": "{{endpointURLBase}}/api/v1/accounts/user/10",
+                  "raw": "{{endpointURLBase}}/api/v1/accounts",
                   "host": [
                     "{{endpointURLBase}}"
                   ],
                   "path": [
                     "api",
                     "v1",
-                    "accounts",
-                    "user",
-                    "10"
+                    "accounts"
                   ]
                 }
               },
@@ -704,13 +991,23 @@
           ]
         },
         {
-          "name": "Update Account By Id",
+          "name": "Update Account By Id of login user",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PATCH",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"OVO Alice\",\n  \"type\": \"e_wallet\",\n  \"balance\": 200000\n}",
+              "raw": "{\n  \"name\": \"Alice Bank Saving\",\n  \"type\": \"bank\",\n  \"balance\": 20000000\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -718,7 +1015,7 @@
               }
             },
             "url": {
-              "raw": "{{endpointURLBase}}/api/v1/accounts/7",
+              "raw": "{{endpointURLBase}}/api/v1/accounts/2",
               "host": [
                 "{{endpointURLBase}}"
               ],
@@ -726,7 +1023,7 @@
                 "api",
                 "v1",
                 "accounts",
-                "7"
+                "2"
               ]
             }
           },
@@ -798,8 +1095,18 @@
           ]
         },
         {
-          "name": "Delete An Account",
+          "name": "Delete An Account of login user",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "body": {
@@ -875,6 +1182,60 @@
               "body": null
             }
           ]
+        },
+        {
+          "name": "Get All Accounts (Admin only)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{endpointURLBase}}/api/v1/accounts/all",
+              "host": [
+                "{{endpointURLBase}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                "all"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{endpointURLBase}}/api/v1/accounts/all",
+                  "host": [
+                    "{{endpointURLBase}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    "all"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
         }
       ]
     },
@@ -887,6 +1248,16 @@
             "disableBodyPruning": true
           },
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "body": {
@@ -940,6 +1311,16 @@
             "disableBodyPruning": true
           },
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "body": {
@@ -1017,8 +1398,18 @@
           ]
         },
         {
-          "name": "Create New Category",
+          "name": "Create New Category. (Admin only)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
@@ -1081,7 +1472,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"name\": \"Hura-hura\",\n  \"type\": \"expense\"\n}",
+                  "raw": "{\n  \"name\": \"Entertainment\",\n  \"type\": \"expense\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1108,13 +1499,23 @@
           ]
         },
         {
-          "name": "Update Category",
+          "name": "Update Category (Admin Only)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PATCH",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Hura-hura Client\",\n  \"type\": \"income\"\n}",
+              "raw": "{\n  \"name\": \"Salary Monthly\",\n  \"type\": \"income\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1122,7 +1523,7 @@
               }
             },
             "url": {
-              "raw": "{{endpointURLBase}}/api/v1/categories/8",
+              "raw": "{{endpointURLBase}}/api/v1/categories/1",
               "host": [
                 "{{endpointURLBase}}"
               ],
@@ -1130,7 +1531,7 @@
                 "api",
                 "v1",
                 "categories",
-                "8"
+                "1"
               ]
             }
           },
@@ -1202,8 +1603,18 @@
           ]
         },
         {
-          "name": "Delete Category",
+          "name": "Delete Category (Admin Only)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "body": {
@@ -1286,8 +1697,18 @@
       "name": "transactions",
       "item": [
         {
-          "name": "Get All Transactions",
+          "name": "Get Transactions of login user",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -1328,17 +1749,123 @@
           ]
         },
         {
-          "name": "Get Transaction By Id",
+          "name": "Get All transactions (Admin only)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenAdmin}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
-            "header": []
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountId\": 1,\n  \"categoryId\": 7,\n  \"type\": \"expense\",\n  \"amount\": 25000,\n  \"description\": \"Ngopi2 with friends\",\n  \"transactionDate\": \"2026-07-15\"\n}"
+            },
+            "url": {
+              "raw": "{{endpointURLBase}}/api/v1/transactions/all",
+              "host": [
+                "{{endpointURLBase}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "transactions",
+                "all"
+              ]
+            }
           },
           "response": [
             {
               "name": "Success",
               "originalRequest": {
                 "method": "GET",
-                "header": []
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountId\": 1,\n  \"categoryId\": 7,\n  \"type\": \"expense\",\n  \"amount\": 25000,\n  \"description\": \"Ngopi2 with friends\",\n  \"transactionDate\": \"2026-07-15\"\n}"
+                },
+                "url": {
+                  "raw": "{{endpointURLBase}}/api/v1/transactions/all",
+                  "host": [
+                    "{{endpointURLBase}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "all"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
+        },
+        {
+          "name": "Get Transaction By Id of login user",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountId\": 1,\n  \"categoryId\": 7,\n  \"type\": \"expense\",\n  \"amount\": 25000,\n  \"description\": \"Ngopi2 with friends\",\n  \"transactionDate\": \"2026-07-15\"\n}"
+            },
+            "url": {
+              "raw": "{{endpointURLBase}}/api/v1/transactions/1",
+              "host": [
+                "{{endpointURLBase}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "transactions",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{endpointURLBase}}/api/v1/transactions/1",
+                  "host": [
+                    "{{endpointURLBase}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "transactions",
+                    "1"
+                  ]
+                }
               },
               "_postman_previewlanguage": null,
               "header": null,
@@ -1371,8 +1898,18 @@
           ]
         },
         {
-          "name": "Get Transactions By Account Id",
+          "name": "Get Transactions By Account Id of login user",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -1441,8 +1978,18 @@
           ]
         },
         {
-          "name": "Create New Transaction",
+          "name": "Create New Transaction of login user",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
@@ -1532,8 +2079,18 @@
           ]
         },
         {
-          "name": "Update a Transaction",
+          "name": "Update a Transaction of login user",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PATCH",
             "header": [],
             "body": {
@@ -1644,8 +2201,18 @@
           ]
         },
         {
-          "name": "Delete A Transaction",
+          "name": "Delete A Transaction of login user",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "body": {
@@ -1754,6 +2321,16 @@
       "key": "endpointURLBase",
       "value": "https://fintrack-production-leon.up.railway.app",
       "description": "endpoint url based"
+    },
+    {
+      "key": "accessToken",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWxpY2VAZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc4NjA4ODk4MCwiZXhwIjoxNzg2MDg5ODgwfQ.iuIk9EjCv4LPK5vE3dHuvAJhfUY5C_FBSb85eaoSiS0",
+      "description": "user access token"
+    },
+    {
+      "key": "accessTokenAdmin",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoiY2l0cmFAZW1haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg2MDkwODcwLCJleHAiOjE3ODYwOTE3NzB9.-Af9ExmPOExQqj4eAc9GLmpEVsZ4B0pa59exo8968jw",
+      "description": "admin access token"
     }
   ]
 }
