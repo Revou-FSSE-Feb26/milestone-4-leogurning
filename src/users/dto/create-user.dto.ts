@@ -42,7 +42,7 @@ export class CreateUserDto {
   @MaxLength(100)
   password: string;
 
-  @ApiProperty({ description: 'Role of the user', example: 'user' })
+  @ApiProperty({ description: 'Role of the user', example: 'admin' })
   @IsEnum(UserRole)
   @IsNotEmpty()
   role: UserRole;
