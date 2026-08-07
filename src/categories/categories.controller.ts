@@ -8,13 +8,25 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { UserRole } from 'generated/prisma/enums';
 
 @Controller('categories')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@ApiBearerAuth('access-token')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
@@ -75,8 +87,9 @@ export class CategoriesController {
   }
 
   @Post()
+  @Roles(UserRole.admin)
   @ApiOperation({
-    summary: 'Create a new category',
+    summary: 'Create a new category. (Admin only)',
     description: 'Create a new category. Admin only.',
   })
   @ApiResponse({
@@ -104,8 +117,9 @@ export class CategoriesController {
   }
 
   @Patch(':id')
+  @Roles(UserRole.admin)
   @ApiOperation({
-    summary: 'Update a category',
+    summary: 'Update a category. (Admin only)',
     description: 'Update an existing category. Admin only.',
   })
   @ApiResponse({
@@ -140,8 +154,9 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @Roles(UserRole.admin)
   @ApiOperation({
-    summary: 'Delete a category',
+    summary: 'Delete a category. (Admin only)',
     description: 'Delete an existing category. Admin only.',
   })
   @ApiResponse({
